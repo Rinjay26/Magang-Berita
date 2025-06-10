@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,7 +32,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('member.blogs.create');
+        $categories = Category::all();
+        return view('member.blogs.create', compact('categories'));
     }
 
     /**
@@ -65,7 +67,8 @@ class BlogController extends Controller
             'status'=>$request->status,
             'thumbnail'=>isset($image_name) ? $image_name : null,
             'slug'=>$this->generateSlug($request->title),
-            'user_id'=>Auth::user()->id
+            'user_id'=>Auth::user()->id,
+            'category_id'=>$request->category_id
         ];
         
         Post::create($data);
@@ -87,7 +90,8 @@ class BlogController extends Controller
     {
         Gate::authorize('edit', $post);
         $data = $post;
-        return view('member.blogs.edit', compact('data'));
+        $categories = Category::all();
+        return view('member.blogs.edit', compact('data', 'categories'));
     }
 
     /**
@@ -123,7 +127,8 @@ class BlogController extends Controller
             'content'=>$request->content,
             'status'=>$request->status,
             'thumbnail'=>isset($image_name) ? $image_name : $post->thumbnail,
-            'slug'=>$this->generateSlug($request->title, $post->id)
+            'slug'=>$this->generateSlug($request->title, $post->id),
+            'category_id'=>$request->category_id
         ];
         
         Post::where('id', $post->id)->update($data);

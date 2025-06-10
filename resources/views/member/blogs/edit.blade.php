@@ -1,4 +1,43 @@
 <x-app-layout>
+    <script>
+        document.addEventListener("trix-attachment-add", function (event) {
+            if (event.attachment.file) {
+                uploadFile(event.attachment);
+            }
+        });
+    
+        function uploadFile(attachment) {
+            const file = attachment.file;
+            const form = new FormData();
+            form.append("attachment", file);
+    
+            fetch("/upload", {
+                method: "POST",
+                body: form,
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                },
+                credentials: 'same-origin'
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Upload failed with status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((result) => {
+                attachment.setAttributes({
+                    url: result.url,
+                    href: result.url,
+                });
+            })
+            .catch((error) => {
+                console.error("Upload gagal:", error);
+                attachment.remove();
+            });
+        }
+    </script>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Edit Tulisan
@@ -31,6 +70,16 @@
                             <div>
                                 <x-input-label for="description" value="Description" />
                                 <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" value="{{ old('description',$data->description) }}" />
+                            </div>
+
+                            <div>
+                                <x-input-label for="category_id" value="Kategori" />
+                                <select name="category_id" id="category_id" class="w-full border border-gray-300 rounded-md">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ (old('category_id', $data->category_id) == $category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div>

@@ -1,4 +1,4 @@
-@props(['title', 'date', 'user', 'description', 'link'])
+@props(['title', 'date', 'user', 'description', 'link', 'category'])
 <div class="post-preview">
     <a href="{{ $link }}">
         <h2 class="post-title">{{ $title }}</h2>
@@ -12,6 +12,9 @@
         Posted by
         <a href="#!">{{ $user }}</a>
         on {{ $date }}
+        @isset($category)
+        <span class="ms-2 badge bg-primary text-white">{{ $category }}</span>
+        @endisset
     </p>
 </div>
 <hr class="my-4" />

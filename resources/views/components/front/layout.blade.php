@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@isset($pageTitle){{ $pageTitle." | " }}@endisset{{ getenv('APP_NAME') }}</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -30,10 +31,13 @@
                             </a>
                             @isset($pageSubheading)
                             <span class="subheading">{{ $pageSubheading }}</span>
-                            @endisset
-
-                            @isset($pageUser)
-                            <span class="meta">Posted By {{ $pageUser }}</span> on {{ $pageDate }}
+                            @endisset                            @isset($pageUser)
+                            <span class="meta">
+                                Posted By {{ $pageUser }} on {{ $pageDate }}
+                                @isset($pageCategory)
+                                <span class="ms-2 badge bg-primary text-white">{{ $pageCategory }}</span>
+                                @endisset
+                            </span>
                             @endisset
                         </div>
                     </div>
@@ -74,7 +78,7 @@
                                         </a>
                                     </li>
                                 </ul> --}}
-                                <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2025</div>
+                                <div class="small text-center text-muted fst-italic">Copyright By: Rinjay aka Restu</div>
                             </div>
                         </div>
                     </div>

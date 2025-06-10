@@ -22,6 +22,14 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+    
+    /**
+     * Get the comments for the user.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

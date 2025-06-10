@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Member\BlogController;
 use App\Http\Controllers\Front\Homepagecontroller;
 use App\Http\Controllers\Front\BlogDetailController;
+use App\Http\Controllers\Front\CategoryController;
 
 Route::get('/', [Homepagecontroller::class,'index']);
 
@@ -32,6 +33,23 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/{slug}',[BlogDetailController::class, 'detail'])->name('blog-detail');
+// Category Routes
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+// Comment Routes
+Route::middleware('auth')->group(function () {
+    Route::post('/comment/{postId}', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
+    Route::delete('/comment/{id}', [App\Http\Controllers\CommentController::class, 'destroy'])->name('comment.destroy');
+});
+
+// Guest Comment Route
+Route::post('/guest-comment/{postId}', [App\Http\Controllers\CommentController::class, 'storeGuest'])->name('comment.store.guest');
+
 Route::post('/upload', [UploadController::class, 'store'])->name('upload');
+Route::post('/upload-trix-image', [UploadController::class, 'store'])->name('upload.trix');
+
+// This should be the last route as it's a catch-all route
+Route::get('/{slug}',[BlogDetailController::class, 'detail'])->name('blog-detail');
+
 

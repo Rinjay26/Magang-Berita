@@ -11,9 +11,13 @@ class BlogDetailController extends Controller
 {
     function detail($slug){
         // echo $slug;
-        $data = Post::where('status', 'publish')->where('slug', $slug)->firstOrFail();
+        $data = Post::with(['category', 'user'])
+            ->where('status', 'publish')
+            ->where('slug', $slug)
+            ->firstOrFail();
         $pagination = $this->pagination($data->id);
-        return view('components.front.blog-detail', compact('data', 'pagination'));
+        $comments = $data->comments()->with('user')->where('is_approved', true)->get();
+        return view('components.front.blog-detail', compact('data', 'pagination', 'comments'));
     }
 
     private function pagination($id){
