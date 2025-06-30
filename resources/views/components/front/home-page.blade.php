@@ -23,6 +23,7 @@
                 user='{{ $value->user->name }}' 
                 link="{{ route('blog-detail', ['slug'=>$value->slug]) }}"
                 category="{{ $value->category->name ?? 'Uncategorized' }}"
+                thumbnail="{{ $value->thumbnail ? asset(getenv('CUSTOM_THUMBNAIL_LOCATION').'/'.$value->thumbnail) : '' }}"
             />
             @endforeach
             <!-- Pager-->

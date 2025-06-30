@@ -45,8 +45,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-                
-                {!! $data->content !!}
+                  {!! $data->content !!}
+                  <!-- Social Media Share -->
+                <div class="social-share-container my-4">
+                    <h5 class="mb-3">Bagikan Artikel Ini:</h5>
+                    <div class="social-buttons">
+                        <!-- Facebook -->
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" 
+                           target="_blank" class="btn btn-facebook me-2 mb-2">
+                            <i class="fab fa-facebook-f me-1"></i> Facebook
+                        </a>
+                        
+                        <!-- Twitter -->
+                        <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($data->title) }}" 
+                           target="_blank" class="btn btn-twitter me-2 mb-2">
+                            <i class="fab fa-twitter me-1"></i> Twitter
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/?text={{ urlencode($data->title . ' ' . url()->current()) }}" 
+                           target="_blank" class="btn btn-whatsapp me-2 mb-2">
+                            <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
                 
                 <!-- Comment Section -->
                 <div class="mt-5 border-top pt-4">
@@ -142,12 +164,34 @@
                             @endif
                         </div>
                     
-                    
-                </div>
+                      </div>
             </div>
         </div>
     </div>
 </article>
+
+<!-- Social Share JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mendapatkan semua tombol berbagi
+        const shareButtons = document.querySelectorAll('.social-buttons a');
+        
+        // Tambahkan event listener ke setiap tombol
+        shareButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Dapatkan URL tujuan
+                const url = this.getAttribute('href');
+                
+                // Buka popup window untuk berbagi
+                window.open(url, 'share-popup', 'height=500,width=600');
+                
+                return false;
+            });
+        });
+    });
+</script>
 </x-front.layout>
 
 

@@ -1,0 +1,21 @@
+/* Custom CSS for Blog Thumbnails */
+.post-preview {
+    margin-bottom: 1.5rem;
+}
+
+.post-preview img {
+    transition: transform 0.3s ease;
+    max-height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.post-preview img:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 767.98px) {
+    .post-preview .col-md-4 {
+        margin-bottom: 1rem;
+    }
+}
